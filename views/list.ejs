@@ -1,24 +1,25 @@
 <%- include("header") -%>
 
 <!-- Title Rendering -->
-
 <div class="box" id="heading">
   <h1><%= listTitle %></h1>
 </div>
 
+<!-- Deleting an item using a checkbox -->
+
 <div class="box">
-  <!-- Deleting an item using a checkbox -->
 
   <% newListItems.forEach(function(item){ %>
+
   <form action="/delete" method="post">
     <div class="item">
       <input
         type="checkbox"
-        value="<%= item._id %> "
         name="checkbox"
+        value="<%= item._id %>"
         onChange="this.form.submit()"
       />
-      <p><%= item.name %></p>
+      <span><p><%= item.name %></p></span>
     </div>
     <input type="hidden" name="listName" value="<%= listTitle %> " />
   </form>
@@ -33,7 +34,9 @@
       placeholder="New Item"
       autocomplete="off"
     />
-    <button type="submit" name="list" value="<%= listTitle %> ">+</button>
+    <button type="submit" name="list" value="<%= listTitle %> ">
+      +
+    </button>
   </form>
 </div>
 
