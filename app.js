@@ -52,14 +52,12 @@ app.get("/", function(req, res) {
           console.log("Successfully saved default items to DB.");
         }
       });
-      res.redirect("/");   
+      res.redirect("/")   
     } else {
       res.render("list", {listTitle: "Today", newListItems: foundItems});
     } 
   });
 });
-
-
 
 // app.get("/", function(req, res) {
 
@@ -93,10 +91,11 @@ app.post("/", function(req, res){
 
 app.post("/delete", function(req, res){
   const checkedItemId = req.body.checkbox;
+  console.log(checkedItemId);
 
-  Item.findByIdAndRemove(checkedItemId, function(err){
+  Item.findByIdAndRemove(checkedItemId, (err) => {
     if (!err) {
-      console.log("Successfully deleted checked item");
+      console.log("Successfully deleted checked item.");
       res.redirect("/");
     }
   });
