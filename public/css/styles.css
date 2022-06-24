@@ -1,6 +1,6 @@
 html {
   background-color: #E4E9FD;
-  background-image: -webkit-linear-gradient(85deg, #91E383 50%, #E4E9FD 50%, #A683E3 25%);
+  background-image: -webkit-linear-gradient(85deg, #91E383 50%, #E4E9FD 50%, #839ee3 25%);
   min-height: 1000px;
   font-family: 'helvetica neue';
 }
@@ -90,7 +90,9 @@ input[type="text"]:focus {
 }
 
 footer {
-  color: white;
-  color: rgba(0, 0, 0, 0.5);
+  /* color: white;
+  color: rgba(0, 0, 0, 0.5); */
   text-align: center;
+  font-size: 20px;
+  font-weight: 300;
 }
