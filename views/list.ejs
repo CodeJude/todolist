@@ -8,6 +8,7 @@
 <!-- Deleting an item using a checkbox -->
 
 <div class="box">
+
   <% newListItems.forEach(function(item){ %>
 
   <form action="/delete" method="post">
@@ -20,7 +21,6 @@
       />
       <span><p><%= item.name %></p></span>
     </div>
-    <input type="hidden" name="listName" value="<%= listTitle %> " />
   </form>
   <% }) %>
 
@@ -33,7 +33,9 @@
       placeholder="New Item"
       autocomplete="off"
     />
-    <button type="submit" name="list" value="<%= listTitle %> ">+</button>
+    <button type="submit" name="list" value="<%= listTitle %> ">
+      +
+    </button>
   </form>
 </div>
 
