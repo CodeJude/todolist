@@ -61,25 +61,6 @@ app.get("/", function(req, res) {
   });
 });
 
-// app.get("/", function(req, res) {
-
-//   Item.find({}, function(err, foundItems){
-//     if (foundItems.length === 0) {
-      
-//   Item.insertMany(defaultItems, function(err){
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Successfully saved default items to DB");
-//   }
-// });
-// res.redirect("/");
-// } else {
-//   res.render("list", {listTitle: "Today", newListItems: foundItems});
-// }  
-// });
-// });
-
 app.post("/", function(req, res){
 
   const itemName = req.body.newItem;
