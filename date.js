@@ -1,4 +1,3 @@
-
 // This gives you the Day and Date when called eg.Saturday, June 25 
 exports.getDate = function () {
   const today = new Date();

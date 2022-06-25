@@ -87,12 +87,24 @@ app.post("/delete", function(req, res){
 app.get("/:pageName", function(req, res){
   const pageName = req.params.pageName;
 
-  const list = new List ({
-    name: pageName,
-    items: defaultItems
+  List.findOne({name: pageName}, function(err, foundList){
+    if (!err){
+      if (!foundList){
+        //Path that create a new list 
+        const list = new List ({
+          name: pageName,
+          items: defaultItems
+        });
+      
+        list.save();
+      } else {
+        //Path that show an existing list
+        res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
+      }
+    }
   });
 
-  list.save();
+  
 })
 
 // app.get("/work", function(req,res){
