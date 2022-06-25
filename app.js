@@ -64,10 +64,17 @@ app.get("/", function(req, res) {
 app.post("/", function(req, res){
 
   const itemName = req.body.newItem;
+  const listName = req.body.list;
 
   const item = new Item({
     name: itemName
   });
+
+  const day = date.getDate();
+  if (listName === day){
+    item.save();
+    res.redirect("/");
+  }
   item.save();
   res.redirect("/");
 });
@@ -97,8 +104,10 @@ app.get("/:pageName", function(req, res){
         });
       
         list.save();
+        res.redirect("/" + pageName);
       } else {
         //Path that show an existing list
+        const day = date.getDate();
         res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
       }
     }
