@@ -61,6 +61,30 @@ app.get("/", function(req, res) {
   });
 });
 
+app.get("/:pageName", function(req, res){
+  const pageName = req.params.pageName;
+
+  List.findOne({name: pageName}, function(err, foundList){
+    if (!err){
+      console.log(foundList);
+      if (!foundList){
+        //Path that create a new list 
+        const list = new List ({
+          name: pageName,
+          items: defaultItems
+        });
+      
+        list.save();
+        res.redirect("/" + pageName);
+      } else {
+        //Path that show an existing list
+        // const day = date.getDate();
+        res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
+      }
+    }
+  }); 
+});
+
 app.post("/", function(req, res){
 
   const itemName = req.body.newItem;
@@ -82,6 +106,8 @@ app.post("/", function(req, res){
     });
   };
 });
+
+// With this line of code commented you can make changes on your title to display dates instead of just customs name but you will have to find a way to make the whole code compatible that am still trying how to, if you can fork the code and update it i will merge it....
 
 // app.post("/", function(req, res){
 
@@ -117,30 +143,6 @@ app.post("/delete", function(req, res){
   });
 });
 
-app.get("/:pageName", function(req, res){
-  const pageName = req.params.pageName;
-
-  List.findOne({name: pageName}, function(err, foundList){
-    if (!err){
-      if (!foundList){
-        //Path that create a new list 
-        const list = new List ({
-          name: pageName,
-          items: defaultItems
-        });
-      
-        list.save();
-        res.redirect("/" + pageName);
-      } else {
-        //Path that show an existing list
-        const day = date.getDate();
-        res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
-      }
-    }
-  });
-
-  
-})
 
 app.get("/about", function(req, res){
   res.render("about");
