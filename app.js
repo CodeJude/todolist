@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const _ = require("lodash");
 const date = require(__dirname + "/date.js");
 const PORT = process.env.PORT || 3000;
 
@@ -11,23 +12,24 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB")
+mongoose.connect("mongodb://localhost:27017/todolistDB");
 
-const itemSchema = new mongoose.Schema({
+const itemsSchema = {
   name: String
-});
+};
 
-const Item = mongoose.model("Item", itemSchema);
+const Item = mongoose.model("Item", itemsSchema);
 
-const item1 = new Item ({
+
+const item1 = new Item({
   name: "Welcome to your todolist!"
 });
 
-const item2 = new Item ({
+const item2 = new Item({
   name: "Hit the + button to add a new item."
 });
 
-const item3 = new Item ({
+const item3 = new Item({
   name: "<-- Hit this to delete an item."
 });
 
@@ -35,14 +37,14 @@ const defaultItems = [item1, item2, item3];
 
 const listSchema = {
   name: String,
-  items: [itemSchema]
+  items: [itemsSchema]
 };
 
 const List = mongoose.model("List", listSchema);
 
-const workItems = [];
 
 app.get("/", function(req, res) {
+
   Item.find({}, function(err, foundItems){
 
     if (foundItems.length === 0) {
@@ -50,39 +52,38 @@ app.get("/", function(req, res) {
         if (err) {
           console.log(err);
         } else {
-          console.log("Successfully saved default items to DB.");
+          console.log("Successfully savevd default items to DB.");
         }
       });
-      res.redirect("/")   
+      res.redirect("/");
     } else {
-      const day = date.getDate();
       res.render("list", {listTitle: "Today", newListItems: foundItems});
-    } 
+    }
   });
+
 });
 
-app.get("/:pageName", function(req, res){
-  const pageName = req.params.pageName;
+app.get("/:customListName", function(req, res){
+  const customListName = _.capitalize(req.params.customListName);
 
-  List.findOne({name: pageName}, function(err, foundList){
+  List.findOne({name: customListName}, function(err, foundList){
     if (!err){
-      console.log(foundList);
       if (!foundList){
         //Path that create a new list 
-        const list = new List ({
-          name: pageName,
+        const list = new List({
+          name: customListName,
           items: defaultItems
         });
-      
         list.save();
-        res.redirect("/" + pageName);
+        res.redirect("/" + customListName);
       } else {
-        //Path that show an existing list
+         //Path that show an existing list
         // const day = date.getDate();
         res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
       }
     }
-  }); 
+  });
+
 });
 
 app.post("/", function(req, res){
@@ -99,12 +100,32 @@ app.post("/", function(req, res){
     res.redirect("/");
   } else {
     List.findOne({name: listName}, function(err, foundList){
-      console.log(foundList);
       foundList.items.push(item);
       foundList.save();
       res.redirect("/" + listName);
     });
-  };
+  }
+});
+
+app.post("/delete", function(req, res){
+  const checkedItemId = req.body.checkbox;
+  const listName = req.body.listName;
+
+  if (listName === "Today") {
+    Item.findByIdAndRemove(checkedItemId, function(err){
+      if (!err) {
+        console.log("Successfully deleted checked item.");
+        res.redirect("/");
+      }
+    });
+  } else {
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemId}}}, function(err, foundList){
+      if (!err){
+        res.redirect("/" + listName);
+      }
+    });
+  }
+
 });
 
 // With this line of code commented you can make changes on your title to display dates instead of just customs name but you will have to find a way to make the whole code compatible that am still trying how to, if you can fork the code and update it i will merge it....
@@ -131,23 +152,10 @@ app.post("/", function(req, res){
 //   }
 // });
 
-app.post("/delete", function(req, res){
-  const checkedItemId = req.body.checkbox;
-  console.log(checkedItemId);
-
-  Item.findByIdAndRemove(checkedItemId, (err) => {
-    if (!err) {
-      console.log("Successfully deleted checked item.");
-      res.redirect("/");
-    }
-  });
-});
-
-
 app.get("/about", function(req, res){
   res.render("about");
 });
 
 app.listen(PORT, function() {
-  console.log(`Server running at port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
