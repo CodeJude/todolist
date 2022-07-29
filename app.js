@@ -34,7 +34,7 @@ const item3 = new Item({
 });
 
 const item4 = new Item({
-  name: "Name and personalize your todolist so only you can know what is in it by putting .herokuapp/the-name"
+  name: "Name and personalize your todolist so only you can know what is in it by putting .herokuapp.com/the-name"
 });
 
 const item5 = new Item({
