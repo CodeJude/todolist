@@ -35,18 +35,10 @@ const item3 = new Item({
 });
 
 const item4 = new Item({
-  name: "Name and personalize your todolist so only you can know what is in it by putting .herokuapp.com/the-name"
+  name: "herokuapp.com/'new-page' to create a new page(any name) only you can access"
 });
 
-const item5 = new Item({
-  name: "Create a new page using a new name, and add anything you want in it"
-});
-
-const item6 = new Item({
-  name: "Whatever name you use is up to you, only you can access it ,this (Today) page can be accessed by anyone around the world unless you want it to be access and deleted also😒"
-});
-
-const defaultItems = [item1, item2, item3, item4, item5, item6];
+const defaultItems = [item1, item2, item3, item4];
 
 const listSchema = {
   name: String,
