@@ -22,10 +22,13 @@
 
     <!-- New Item Rendering -->
     
-      <form class="item" action="/" method="post">
-        <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+     
+      <form class="item" action="/" method="post" onSubmit="">
+        <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
         <button type="submit" name="list" value="<%= listTitle %>">+</button>
       </form>
+
   </div>
+
 
 <%- include("footer") -%>
